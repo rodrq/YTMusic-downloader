@@ -2,9 +2,14 @@ import tkinter as tk
 import pytube
 import os
 import clipboard
+import settings
+
+if os.path.exists(settings.DOWNLOAD_FOLDER) == False:
+    os.makedirs(settings.DOWNLOAD_FOLDER)
+    print('Created download dir')
 
 def paste():
-    entry_text.set( clipboard.paste() )
+    entry_text.set(clipboard.paste() )
     print(clipboard.paste())
 def download():
     link = entry.get()
@@ -12,14 +17,15 @@ def download():
         yt = pytube.YouTube(link, use_oauth = True, allow_oauth_cache = True)
         stream = yt.streams.get_by_itag(140)
         size = (f'{stream.filesize/1000000} MBs')
-        if os.path.exists(f'D:\Programacion\YTMusic downloader\{yt.title}.mp3'):
+        if os.path.exists(settings.DOWNLOAD_FOLDER + f"\{yt.title}.mp3"):
             print('Song already exists in folder')
         else:
             print(f'Trying to download {yt.title}. Size = {size}')
-            stream.download(output_path= 'D:\Programacion\YTMusic downloader')
-            print(f'{size} downloaded. {yt.title} ready')
-            os.rename(f'D:\Programacion\YTMusic downloader\{yt.title}.mp4', f'D:\Programacion\YTMusic downloader\{yt.title}.mp3')
+            stream.download(output_path= f'{settings.DOWNLOAD_FOLDER}')
+            print(f'{size} downloaded.')
+            os.rename((settings.DOWNLOAD_FOLDER + f"\{yt.title}.mp4"), (settings.DOWNLOAD_FOLDER + f"\{yt.title}.mp3"))
             print('Format changed from MP4 to MP3')
+            print(f'{yt.title} downloaded')
     except:
         print('Wrong link or something went wrong.')
 
