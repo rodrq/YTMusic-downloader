@@ -1,3 +1,3 @@
 # YTMusic-downloader
 
-Simple project to learn a bit. Don't use.
+Simple project to learn a bit about tkinters and requests. Don't use.
